@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+	<title>Assistant</title>
+	<link rel="stylesheet" href="styles.css">
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="src/voice-player.html">
+    <link rel="import" href="src/voice-recognition.html">
+</head>
+<body>
+	<center>
+		<img src="img/assistant.gif"><p>
+		<span id="message_assistant"></span>
+		<br/>
+		<form style="display: inline">
+			<input type="text" id="message_utilisateur">
+			<input type="submit" value="Envoyer">
+		</form>
+	</center>
+</body>
+<script>
+  $(function () {
+    var socket = io();
+    $('form').submit(function(){
+      socket.emit('message_utilisateur', $('#message_utilisateur').val());
+      $('#message_utilisateur').val('');
+      return false;
+    });
+    socket.on('message_assistant', function(msg){
+      $('#message_assistant').html(msg);
+    });
+  });
+</script>
